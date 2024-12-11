@@ -1,0 +1,66 @@
+<?php
+// proses_login.php
+session_start();
+
+// Data user contoh (biasanya diambil dari database)
+$users = [
+    'admin' => 'password123',
+    'user' => 'user123'
+];
+
+// Tangkap data login dari form
+$username = $_POST['username'] ?? '';
+$password = $_POST['password'] ?? '';
+
+// Proses pengecekan login
+if (isset($users[$username]) && $users[$username] === $password) {
+    // Login berhasil
+    $_SESSION['login'] = true;
+    $_SESSION['username'] = $username;
+    
+    // Redirect ke halaman dashboard
+    header("Location: dashboard.php");
+    exit();
+} else {
+    // Login gagal
+    $error = "Username atau password salah!";
+}
+?>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Proses Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .message {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="message">
+        <?php
+        if (isset($error)) {
+            echo "<p class='error'>$error</p>";
+            echo "<a href='index.html'>Kembali ke Login</a>";
+        }
+        ?>
+    </div>
+</body>
+</html>
